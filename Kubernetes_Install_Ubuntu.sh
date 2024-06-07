@@ -12,7 +12,6 @@
 	echo "################################# SLEEP 5 ################################################ "
 	sleep 5
 	echo "##########   sudo snap install docker, docker is needed for Kubernetes       ###############"
-	#        sudo snap install docker
 	sudo apt install -y docker.io
 	sleep 9
         echo "###   sudo chmod 666 /var/run/docker.sock   ############################################## "
@@ -23,18 +22,21 @@
         echo "####===     sudo dpkg -i minikube_latest_amd64.deb      =============================##### "
 			sudo dpkg -i minikube_latest_amd64.deb
 	 echo "2.1   #################     minikube start    ############################# "
-			minikube start
+			minikube start  & 
+	systemctl daemon-reload   
 	echo "####=================================================================================##### "
 	echo "####=====  kubectl auto complete    https://spacelift.io/blog/kubectl-auto-completion   ====##### "
 		sudo   apt-get install bash-completion
 		kubectl completion bash | sudo tee /etc/bash_completion.d/kubectl > /dev/null
         echo "####=================================================================================##### "
     	echo "####======From this point we can install  applications =========================##### "
-		kubectl apply -f /home/john/Vimal/2023-ubuntu/Kubernetes-folder/nginx-deployment.yaml
+		# kubectl apply -f /home/john/Vimal/2023-ubuntu/Kubernetes-folder/nginx-deployment.yaml
+	kubectl apply -f  https://raw.githubusercontent.com/panampunna/kubernetes/develop/nginx-deployment.yaml
         echo "####====       sleep 9           ==============================##### "
 		sleep 9
 	echo "####==========  Expose the Nginx deployment as a service to make it accessible from outside the cluster. You can create a service YAML file, for example, nginx-service.yaml, with the following content:    =======##### "
-		kubectl apply -f   /home/john/Vimal/2023-ubuntu/Kubernetes-folder/nginx-service.yaml
+	#kubectl apply -f   /home/john/Vimal/2023-ubuntu/Kubernetes-folder/nginx-service.yaml
+	kubectl apply -f   https://raw.githubusercontent.com/panampunna/kubernetes/develop/nginx-service.yaml
 	echo "####====        kubectl get services           ==============================##### "
 			kubectl get services
 		 echo -e "\n\n\n    sleep 20   "
