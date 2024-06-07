@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: panampunna-kerala
+  template:
+    metadata:
+      labels:
+        app: panampunna-kerala
+    spec:
+      containers:
+        - name: panampunna-kerala
+          image: vimaldevops/panampunna-kerala:V3
+          ports:
+            - containerPort: 80
+          resources:
+            requests:
+              cpu: 100m
