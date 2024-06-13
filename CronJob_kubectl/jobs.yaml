@@ -4,10 +4,13 @@ metadata:
   name: hello-world-job
 spec:
   template:
+    metadata:
+      labels:
+        app: hello-world
     spec:
       containers:
       - name: hello-world
-        image: hello-world-demo
+        image: vimaldevops/panampunna-kerala:kubectl_cronjobs_countdown-nginx-12
       restartPolicy: Never
-  backoffLimit: 4
+  backoffLimit: 3
 

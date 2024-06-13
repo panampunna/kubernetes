@@ -3,13 +3,19 @@ kind: CronJob
 metadata:
   name: hello-world-cronjob
 spec:
-  schedule: "*/1 * * * *"  # Runs every minute
+  schedule: "*/5 * * * *"
   jobTemplate:
     spec:
       template:
+        metadata:
+          labels:
+            app: hello-world
         spec:
           containers:
           - name: hello-world
-            image: hello-world-demo
+            image: vimaldevops/panampunna-kerala:kubectl_cronjobs_countdown-nginx-12
           restartPolicy: OnFailure
+
+
+
 

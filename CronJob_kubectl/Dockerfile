@@ -1,12 +1,16 @@
-# Use the official Nginx image as the base image
+
 FROM nginx:latest
 
 # Copy the HTML file to the Nginx HTML directory
 COPY index.html /usr/share/nginx/html/index.html
 
-# Expose port 80
+# Add a script to start Nginx, wait for a while, and then stop
+COPY start-nginx.sh /usr/local/bin/start-nginx.sh
+RUN chmod +x /usr/local/bin/start-nginx.sh
+
+# Expose port 81
 EXPOSE 81
 
-# Start Nginx
-CMD ["nginx", "-g", "daemon off;"]
+# Use the script as the command
+CMD ["sh", "/usr/local/bin/start-nginx.sh"]
 
