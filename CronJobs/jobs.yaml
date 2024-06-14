@@ -8,7 +8,7 @@ spec:
     spec:
       containers:
       - name: panampunna-job-container
-        image: vimaldevops/panampunna-kerala:king-kubernetes
+        image: vimaldevops/panampunna-kerala:king-ktest
         args:
         - /bin/bash
         - -c
