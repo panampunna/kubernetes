@@ -49,4 +49,8 @@ spec:
       restartPolicy: OnFailure
 
 ################################################################################
+copy files in pods 
+kubectl cp <namespace>/<pod-name>:<path/to/file/in/container> <local-path>
+
+
 
