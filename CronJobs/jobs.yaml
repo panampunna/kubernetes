@@ -1,10 +1,15 @@
-
 apiVersion: batch/v1
 kind: Job
 metadata:
   name: panampunna-job
+  labels:
+    app: panampunna-app
 spec:
+  ttlSecondsAfterFinished: 300  # 5 minutes
   template:
+    metadata:
+      labels:
+        app: panampunna-app
     spec:
       containers:
       - name: panampunna-job-container
@@ -15,3 +20,4 @@ spec:
         - "echo 'Hello, Kubernetes Job!'"
       restartPolicy: OnFailure
 
+        

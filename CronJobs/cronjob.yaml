@@ -2,11 +2,19 @@ apiVersion: batch/v1
 kind: CronJob
 metadata:
   name: panampunna-cronjob
+  labels:
+    app: panampunna-app
 spec:
-  schedule: "0/6 0 * * *"  # This is a cron schedule expression
+  schedule: "*/6 * * * *"  # This runs every 6 minutes
+  successfulJobsHistoryLimit: 1
+  failedJobsHistoryLimit: 1
   jobTemplate:
     spec:
+      ttlSecondsAfterFinished: 300  # 5 minutes
       template:
+        metadata:
+          labels:
+            app: panampunna-app
         spec:
           containers:
           - name: panampunna-cronjob-container
@@ -16,4 +24,4 @@ spec:
             - -c
             - "echo 'Hello, Kubernetes CronJob!'"
           restartPolicy: OnFailure
-
+            
