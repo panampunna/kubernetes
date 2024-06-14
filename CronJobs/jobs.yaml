@@ -1,0 +1,17 @@
+
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: panampunna-job
+spec:
+  template:
+    spec:
+      containers:
+      - name: panampunna-job-container
+        image: vimaldevops/panampunna-kerala:king-kubernetes
+        args:
+        - /bin/bash
+        - -c
+        - "echo 'Hello, Kubernetes Job!'"
+      restartPolicy: OnFailure
+

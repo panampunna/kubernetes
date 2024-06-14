@@ -1,0 +1,19 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: panampunna-cronjob
+spec:
+  schedule: "0/6 0 * * *"  # This is a cron schedule expression
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: panampunna-cronjob-container
+            image: vimaldevops/panampunna-kerala:king-kubernetes
+            args:
+            - /bin/bash
+            - -c
+            - "echo 'Hello, Kubernetes CronJob!'"
+          restartPolicy: OnFailure
+
