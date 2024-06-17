@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: panampunna-deployment
+  labels:
+    app: panampunna-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: panampunna-app
+  template:
+    metadata:
+      labels:
+        app: panampunna-app
+    spec:
+      containers:
+      - name: panampunna-container
+        image: vimaldevops/panampunna-kerala:king-ktest
+        ports:
+        - containerPort: 8080
+
