@@ -1,0 +1,79 @@
+version: 0.2
+
+phases:
+  pre_build:
+    commands:
+      - echo Logging in to Amazon ECR...
+      - aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin 056621886287.dkr.ecr.ap-south-1.amazonaws.com
+      - echo "Login successful."
+  
+  build:
+    commands:
+      - echo Building the Docker image...
+      - pwd
+      - echo "######################################################"
+      - echo CODEBUILD_BUILD_NUMBER =   ${CODEBUILD_BUILD_NUMBER} 
+      -  echo CODEBUILD_SOURCE_VERSION =  ${CODEBUILD_SOURCE_VERSION}
+      -  echo CODEBUILD_BUILD_ID =  ${CODEBUILD_BUILD_ID}
+      - echo  CODEBUILD_BUILD_ARN =  ${CODEBUILD_BUILD_ARN}
+      - echo Project Name =  ${CODEBUILD_PROJECT_NAME}
+      - echo Source Version = ${CODEBUILD_SOURCE_VERSION}
+      - echo Source Repo URL =  ${CODEBUILD_SOURCE_REPO_URL}
+      - echo Resolved Source Version = ${CODEBUILD_RESOLVED_SOURCE_VERSION}
+      - echo Initiator = ${CODEBUILD_INITIATOR}
+      - echo Log Path = ${CODEBUILD_LOG_PATH}
+      - echo Build Start Time = ${CODEBUILD_START_TIME}
+      - echo Build End Time = ${CODEBUILD_END_TIME}
+      - echo Artifacts Bucket = ${CODEBUILD_ARTIFACTS_BUCKET}
+      - echo SCM Source = ${CODEBUILD_SCM_SOURCE}
+      - echo Build Status = ${CODEBUILD_BUILD_STATUS}
+      - echo Project Version = ${CODEBUILD_PROJECT_VERSION}
+      - echo Region = ${CODEBUILD_REGION}
+      - echo Source Type = ${CODEBUILD_SOURCE_TYPE}
+      - echo Source Branch = ${CODEBUILD_SOURCE_BRANCH}
+      - echo Artifacts Type = ${CODEBUILD_ARTIFACTS_TYPE}
+      - echo   https://docs.aws.amazon.com/codebuild/latest/userguide/build-env-ref-env-vars.html  
+      - ls -lh Files_2_repo/
+      - echo "Building the Docker image with tags latest"
+      - cat Files_2_repo/1_BuildXX-aws-king-nginx-deployment-service.yaml
+      - sed -i "s|{{IMAGE_TAG}}|${CODEBUILD_BUILD_NUMBER}|g" Files_2_repo/1_BuildXX-aws-king-nginx-deployment-service.yaml
+      - cat  Files_2_repo/1_BuildXX-aws-king-nginx-deployment-service.yaml
+      - docker build -t king-docker-image-ecr-repository:${CODEBUILD_BUILD_NUMBER} -f Files_2_repo/Dockerfile .
+      - docker tag king-docker-image-ecr-repository:${CODEBUILD_BUILD_NUMBER}    056621886287.dkr.ecr.ap-south-1.amazonaws.com/king-docker-image-ecr-repository:${CODEBUILD_BUILD_NUMBER}
+      - echo "AWS EKS User need to create localy ( Set6_King-context_Working folder have script ) and use that TOken in the buildspec    "
+
+  post_build:
+    commands:
+      - echo Pushing the Docker image to Amazon ECR...
+      - docker push 056621886287.dkr.ecr.ap-south-1.amazonaws.com/king-docker-image-ecr-repository:${CODEBUILD_BUILD_NUMBER}
+      - echo "Docker image successfully pushed with tag  ${CODEBUILD_BUILD_NUMBER}"
+      - aws eks --region ap-south-1   update-kubeconfig --name   eks_cluster_john1 
+      -  echo " aws aws_secretsmanager_secret    Token   = aws_eks_user_awseksjohn_token "
+      -  aws secretsmanager get-secret-value --secret-id aws_eks_user_awseksjohn_token --query 'SecretString' --output text
+      -  aws secretsmanager get-secret-value --secret-id aws_eks_user_awseksjohn_token --query 'SecretString' --output text | jq -r '.password'
+      - echo "Line 52 Buildspec.yml   Fetching token from AWS Secrets Manager..."
+      - TOKEN=$(aws secretsmanager get-secret-value --secret-id aws_eks_user_awseksjohn_token --query 'SecretString' --output text | jq -r '.password.token')
+      - echo   $TOKEN  
+      - echo "#################"
+      - kubectl get pods -A --as system:serviceaccount:default:awseksjohn --token=$TOKEN
+      #    - kubectl get pods -A --as system:serviceaccount:default:awseksjohn --token=$TOKEN
+############# 
+      -  kubectl apply -f Files_2_repo/3_tag_aws-king-nginx-deployment-service.yaml   --as system:serviceaccount:default:awseksjohn --token=$TOKEN
+
+ #    - kubectl apply -f Files_2_repo/3_tag_aws-king-nginx-deployment-service.yaml   --as system:serviceaccount:default:awseksjohn --token=eyJhbGciOiJSUzI1NiIsImtpZ6InN5c3RlbTpzZXJ2aWNlYWNjb3VudDpkZWZhdWx0OmF3c2Vrc2pvaG4ifQ.DFDkmhoK11fv9BkmKXUli8A7Nl4zko_WrD1PCFpKgfdAU092D0TA64FE_IQDBrQsKdns7eninFbeYkpdZzd87CpW3H3hPqsBaM80l3u0CIjG48lXaFWWY2hXxNSz6YXNaFpPaTvJkSb4VYS9g0UlYNeZX0uoKy9K5akHfclxpMThtg45VqtrLEyT7FlokONFDpjCKV4CZYottGbyi1jFUdoBvsYcSOzoKKwVlt8-HSkFGqK_WFh8Qk1dvAvWK0OnsWitMQpM3UvZ8EYwxwDF-MkwnbzuNwmsg-t6BDt0DWpQX5sJeFhtcr2KfmxdPBwYSEum6FjGhk0sxYdWdHptpQ
+      -  aws sts get-caller-identity
+      -  kubectl config get-contexts
+      -  aws --version
+      -  kubectl config current-context
+      -   kubectl config get-users
+      - kubectl config get-clusters
+      - kubectl config view 
+      - export KUBE_TOKEN=$(aws eks --region ap-south-1 get-token --cluster-name eks_cluster_john1 --query 'status.token' --output text)
+      -     echo $KUBE_TOKEN
+      - aws eks describe-cluster --name eks_cluster_john1 --region ap-south-1
+      - echo "####################################################"
+
+artifacts:
+  files:
+    - '**/*'
+

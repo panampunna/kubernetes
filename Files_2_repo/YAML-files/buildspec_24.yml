@@ -1,0 +1,22 @@
+version: 0.2
+phases:
+  build:
+    commands:
+    - echo Building the project $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+  install:
+    commands:
+    - echo Installing source $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+      - apt-get update -y
+  post_build:
+    commands:
+    - echo Build completed $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+    - ls 
+    - pwd   
+    - echo $CODEBUILD_START_TIME
+    - echo $CODEBUILD_LOG_PATH 
+    - echo  $CODEBUILD_BUILD_ID  
+    - echo  $CODEBUILD_BUILD_IMAGE
+    - echo  $CODEBUILD_BUILD_NUMBER
+    - echo  $CODEBUILD_SOURCE_REPO_URL
+    - echo  $CODEBUILD_SOURCE_VERSION   
+

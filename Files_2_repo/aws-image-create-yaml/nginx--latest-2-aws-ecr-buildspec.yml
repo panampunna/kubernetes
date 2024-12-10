@@ -1,0 +1,19 @@
+version: 0.2
+
+phases:
+  pre_build:
+    commands:
+      - echo "Logging in to Amazon ECR..."
+      - aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin 056621886287.dkr.ecr.ap-south-1.amazonaws.com
+  build:
+    commands:
+      - echo "Pulling the official NGINX Docker image..."
+      - docker pull nginx:latest
+
+      - echo "Tagging the NGINX image for Amazon ECR..."
+      - docker tag nginx:latest 056621886287.dkr.ecr.ap-south-1.amazonaws.com/king-docker-image-ecr-repository:nginx
+  post_build:
+    commands:
+      - echo "Pushing the NGINX image to Amazon ECR..."
+      - docker push 056621886287.dkr.ecr.ap-south-1.amazonaws.com/king-docker-image-ecr-repository:nginx
+      # king-docker-image-ecr-repository
