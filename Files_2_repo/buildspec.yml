@@ -44,6 +44,7 @@ phases:
 
   post_build:
     commands:
+      - echo  Pushing  nginx image  in buildspec will not work, image name have dubble collen || need to run shell script from local only. 
       - echo Pushing the Docker image to Amazon ECR...
       - docker push 056621886287.dkr.ecr.ap-south-1.amazonaws.com/king-docker-image-ecr-repository:${CODEBUILD_BUILD_NUMBER}
       - echo "Docker image successfully pushed with tag  ${CODEBUILD_BUILD_NUMBER}"
