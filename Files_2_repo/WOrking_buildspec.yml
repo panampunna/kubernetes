@@ -1,0 +1,28 @@
+version: 0.2
+
+phases:
+  pre_build:
+    commands:
+      - echo Logging in to Amazon ECR...
+      - aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin 056621886287.dkr.ecr.ap-south-1.amazonaws.com
+      - echo "Login successful."
+  
+  build:
+    commands:
+      - echo Building the Docker image...
+      - pwd
+      - ls -lh Files_2_repo/
+      - echo "Building the Docker image with tags latest"
+      - docker build -t king-docker-image-ecr-repository:latest -f Files_2_repo/Dockerfile .
+      - docker tag king-docker-image-ecr-repository:latest 056621886287.dkr.ecr.ap-south-1.amazonaws.com/king-docker-image-ecr-repository:latest
+
+  post_build:
+    commands:
+      - echo Pushing the Docker image to Amazon ECR...
+      - docker push 056621886287.dkr.ecr.ap-south-1.amazonaws.com/king-docker-image-ecr-repository:latest
+      - echo "Docker image successfully pushed with tags latest"
+
+artifacts:
+  files:
+    - '**/*'
+

@@ -1,0 +1,41 @@
+aws eks --region ap-south-1   update-kubeconfig --name  eks_cluster_john1
+sudo snap install kubectl   (in Local) 
+kubectl get pods -A
+
+##################################Nov 2024 Old below #####################################################
+aws eks --region ap-south-1   update-kubeconfig --name  <cluster name >
+
+kubectl auth can-i list jobs --as="arn:aws:iam::056621886287:user/john"
+
+kubectl apply -f john-list-jobs-binding.yaml
+
+kubectl apply -f list-jobs-clusterrole.yaml
+
+aws iam create-role --role-name eksClusterRole --assume-role-policy-document file://eks-trust-policy.json
+aws iam attach-role-policy --role-name eksClusterRole --policy-arn arn:aws:iam::aws:policy/AmazonEKSClusterPolicy
+
+aws iam attach-role-policy --role-name eksWorkerNodeRole --policy-arn arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy
+aws iam attach-role-policy --role-name eksWorkerNodeRole --policy-arn arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly
+aws iam attach-role-policy --role-name eksWorkerNodeRole --policy-arn arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy
+
+
+#######################################
+
+alias kubectl-config-use-context__minikube='kubectl config use-context minikube'
+alias kubectl-config-update-kubeconfig__vjp-eks-cluster_name-AWS='aws eks --region ap-south-1   update-kubeconfig --name AWS-eks-cluster_name'
+
+kubectl get events --namespace default --field-selector involvedObject.kind=Ingress
+aws elbv2 describe-target-groups --target-group-arn <target_group_arn>
+
+aws elbv2 describe-target-groups --target-group-arn arn:aws:elasticloadbalancing:ap-south-1:056621886287:targetgroup/TG-Pre20240630091449860900000011/1a728f2ab564c52c
+
+kubectl exec -it set1-king-deployment-1-76d86d47-m9fzq -- /bin/sh
+curl localhost:80
+
+kubectl get endpoints set1-king-service-1
+
+
+
+
+
+

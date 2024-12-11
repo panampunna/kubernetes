@@ -1,0 +1,60 @@
+
+###############  kamal user (serviceaccount) 
+
+   kubectl create serviceaccount kamal -n default
+   kubectl create clusterrolebinding kamal-binding --clusterrole=cluster-admin --serviceaccount=default:kamal
+   kubectl create token kamal --duration=8760h 
+   kubectl get secret $(kubectl get sa kamal -o jsonpath='{.secrets[0].name}') -o jsonpath='{.data.token}' | base64 --decode
+   testing  ##########
+    kubectl get pods -A  --as system:serviceaccount:default:kamal --token= XXXX TOKEN XXXX
+   kubectl get pods -A  --as system:serviceaccount:default:kamal --token= XXXX TOKEN XXXX
+
+
+
+
+
+
+###### kamal SA is created 
+###################################
+kubectl get secret kamal-token -o jsonpath='{.data.token}' | base64 --decode
+
+
+kubectl get secret $(kubectl get sa kamal -o jsonpath='{.secrets[0].name}') -o jsonpath='{.data.token}' | base64 --decode
+echo "###########"
+kubectl config set-credentials kamal-user --token=$(kubectl get secret $(kubectl get sa kamal -o jsonpath='{.secrets[0].name}') -o jsonpath='{.data.token}' | base64 --decode)
+echo "###########"
+kubectl config set-context kamal-context --cluster=minikube --user=kamal-user --namespace=default
+echo "###########"
+kubectl config use-context kamal-context
+echo "###########"
+kubectl config get-contexts
+echo "###########"
+
+
+
+
+################################################################################################################
+
+
+kubectl auth can-i create pods --as system:serviceaccount:default:kamal
+kubectl config use-context minikube
+
+
+kubectl -n <namespace> get secret $(kubectl -n <namespace> get serviceaccount kamal-user -o jsonpath='{.secrets[0].name}') -o jsonpath='{.data.token}' | base64 --decode
+kubectl -n default   get secret $(kubectl -n  default  get serviceaccount kamal-user -o jsonpath='{.secrets[0].name}') -o jsonpath='{.data.token}' | base64 --decode
+############################
+kubectl -n default   get secret $(kubectl -n  default  get serviceaccount kamal -o jsonpath='{.secrets[0].name}') -o jsonpath='{.data.token}' | base64 --decode
+eyJhbGciOiJSUzI1NiIsImtpZCI6IkdJemZ5VnJBRTI2ZUxGMUVGNXpWWHg5a0hXY2JoQTNxRldtQkdmcjBCeFkifQ.eyJpc3MiOiJrdWJlcm5ldGVzL3NlcnZpY2VhY2NvdW50Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9uYW1lc3BhY2UiOiJkZWZhdWx0Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9zZWNyZXQubmFtZSI6ImthbWFsLXRva2VuIiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9zZXJ2aWNlLWFjY291bnQubmFtZSI6ImthbWFsIiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9zZXJ2aWNlLWFjY291bnQudWlkIjoiNjYyYTMyZWYtNzQ4MS00NGY1LThhMWQtNTkwMGYwODhjYmMzIiwic3ViIjoic3lzdGVtOnNlcnZpY2VhY2NvdW50OmRlZmF1bHQ6a2FtYWwifQ.NZ8-21T1_D6qRvSfxD_9gwEemfqIHa05hHgX-bwKdD5cdgtxqzS6RbMaG3x00GmSvv0blr5elVZV70FXr5NfB4lP1hKYYKe6JQYC4NUEBVIvKzUyvPUPUjuseoBOrGf8a47a5t0cEKbtkYRVnKMpaTmMzv_oVwhuWpDcLq20Ang6tktCPNplHH_MfPyUvuzoGpoHvcj-oq21ObbnkR70sisG2mIIN2A2SlpqvrQ2JyQ1AInIzT0YMIS26W2BSXVA1hsCSAvPqxKATrgdruMUD0SuVY0VprFiv-LANoD6bcWCX2INBxWFqQSVaipjLqVEmy13-ITWu0EjiKdqdq--Ug
+
+
+###########################################
+john@ubuntu202410:~/.kube$ vim  config 
+john@ubuntu202410:~/.kube$ ls
+cache  config  config_1dec4pm  config_working_kamal_home-john-dot-kube
+john@ubuntu202410:~/.kube$ 
+OR  OR   OR 
+
+kubectl config set-credentials kamal-user --token=<your-token-here>
+
+kubectl config set-credentials kamal-user --token=<your-token-here>
+

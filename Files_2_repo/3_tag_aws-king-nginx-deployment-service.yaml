@@ -1,0 +1,40 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-service-3
+spec:
+  selector:
+    app: panampunna-kerala
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+  type: LoadBalancer
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-deployment-3
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: panampunna-kerala
+  template:
+    metadata:
+      labels:
+        app: panampunna-kerala
+    spec:
+      containers:
+        - name: panampunna-kerala
+          image: king-docker-image-ecr-repository:{{IMAGE_TAG}}
+          ports:
+            - containerPort: 80
+          resources:
+            requests:
+              cpu: 100m
+
+
+
