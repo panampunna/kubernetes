@@ -1,0 +1,10 @@
+
+###  1st step 
+
+aws eks --region ap-south-1   update-kubeconfig --name   eks_cluster_john1
+
+kubectl config get-contexts
+
+kubectl  config use-context 
+
+

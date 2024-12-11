@@ -1,0 +1,33 @@
+version: 0.2
+
+phases:
+  pre_build:
+    commands:
+      - echo Logging in to Amazon ECR...
+      - aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin 056621886287.dkr.ecr.ap-south-1.amazonaws.com
+  build:
+    commands:
+      - echo Building the Docker image...
+      - pwd 
+      - ls 
+      
+      # Create the timestamp for the tag (e.g., 2024-11-28-1445)
+      - TAG=$(date +"%Y-%m-%d-%H%M")
+      - echo "Tagging the image as $TAG"
+      
+      # Build the Docker image and tag it with the current timestamp
+      - docker build -t king-docker-image-ecr-repository:$TAG -f Files_2_repo/Dockerfile .
+      
+      # Tag the image with ECR repository name
+      - docker tag king-docker-image-ecr-repository:$TAG 056621886287.dkr.ecr.ap-south-1.amazonaws.com/king-docker-image-ecr-repository:$TAG
+  post_build:
+    commands:
+      - echo Pushing the Docker image to Amazon ECR...
+      
+      # Push the Docker image with the timestamp tag to ECR
+      - docker push 056621886287.dkr.ecr.ap-south-1.amazonaws.com/king-docker-image-ecr-repository:$TAG
+
+artifacts:
+  files:
+    - '**/*'
+

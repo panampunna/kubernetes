@@ -1,0 +1,94 @@
+
+aws eks --region ap-south-1   update-kubeconfig --name   eks_cluster_john1
+Updated context arn:aws:eks:ap-south-1:056621886287:cluster/eks_cluster_john1 in /home/john/.kube/config
+john@ubuntu202410:~/Vimal/2023-ubuntu/HashiCorp/Terraform/5_AWS_CodePipeline/modules/eks/eks$ kubectl get pods -A
+NAMESPACE     NAME                      READY   STATUS    RESTARTS   AGE
+kube-system   aws-node-4t9bd            2/2     Running   0          8m22s
+kube-system   coredns-5f7c9b478-6htsf   1/1     Running   0          10m
+kube-system   coredns-5f7c9b478-t9k9s   1/1     Running   0          10m
+kube-system   kube-proxy-cjm74          1/1     Running   0          8m22s
+john@ubuntu202410:~/Vimal/2023-ubuntu/HashiCorp/Terraform/5_AWS_CodePipeline/modules/eks/eks$ kubectl get configmap -n kube-system aws-auth -o yaml
+apiVersion: v1
+data:
+  mapRoles: |
+    - groups:
+      - system:bootstrappers
+      - system:nodes
+      rolearn: arn:aws:iam::056621886287:role/eks-cluster-node_role
+      username: system:node:{{EC2PrivateDNSName}}
+kind: ConfigMap
+metadata:
+
+
+
+
+
+
+
+###
+1)   john@Ubuntu22:~/Vimal/2023-ubuntu/Kubernetes-folder/hub.docker.com/panampunna-kerala$ docker build -t  vimaldevops/panampunna-kerala:V5   .
+
+2)###$ docker images
+REPOSITORY                      TAG       IMAGE ID       CREATED              SIZE
+vimaldevops/panampunna-kerala   V5        adee7c23021e   About a minute ago   316MB
+nginx                           latest    021283c8eb95   45 hours ago         187MB
+gcr.io/k8s-minikube/kicbase     v0.0.39   67a4b1138d2d   3 months ago         1.05GB
+john@Ubuntu22:~/Vimal/2023-ubuntu/Kubernetes-folder/hub.docker.com/panampunna-kerala$ 
+
+3) docker login
+Login with your Docker ID to push and pull images from Docker Hub. If you don't have a Docker ID, head over to https://hub.docker.com to create one.
+Username: vimaldevops
+Password:   PW in ZIM 
+WARNING! Your password will be stored unencrypted in /home/john/snap/docker/2893/.docker/config.json.
+Configure a credential helper to remove this warning. See
+https://docs.docker.com/engine/reference/commandline/login/#credentials-store
+
+Login Succeeded
+
+4) docker push vimaldevops/panampunna-kerala:V5
+
+The push refers to repository [docker.io/vimaldevops/panampunna-kerala]
+0f667ac40ed6: Pushed 
+
+5) Check in https://hub.docker.com/repository/docker/vimaldevops/panampunna-kerala/general 
+
+
+
+
+######################################################
+### docker push vimaldevops/panampunna-kerala:tagname
+
+## Run below line to create Docker images 
+docker build -t  vimaldevops/panampunna-kerala:V1
+
+john@Ubuntu22:~/Vimal/2023-ubuntu/Kubernetes-folder/hub.docker.com/panampunna-kerala$ docker build -t  vimaldevops/panampunna-kerala:V1   .
+Sending build context to Docker daemon  4.682MB
+Step 1/12 : FROM nginx
+latest: Pulling from library/nginx
+5b5fe70539cd: Pull complete 
+441a1b465367: Pull complete 
+3b9543f2b500: Pull complete 
+
+
+john@Ubuntu22:~/Vimal/2023-ubuntu/Kubernetes-folder/hub.docker.com/panampunna-kerala$ docker images 
+REPOSITORY                      TAG       IMAGE ID       CREATED          SIZE
+vimaldevops/panampunna-kerala   V1        601fdb091da4   11 seconds ago   311MB
+
+-kerala$ docker login
+
+vimaldevops   is the user 
+
+https://hub.docker.com/repository/docker/vimaldevops/panampunna-kerala/general
+ ##### to move some files from local system to pods 
+kubectl cp <source-file> <namespace>/<pod-name>:<target-path> -c <container-name>
+kubectl cp vjp.jpg  default/nginx-deployment-857cccf8d4-nhgsn:/var/www/html/
+############################################################################################
+
+/Vimal/2023-ubuntu/Kubernetes-folder/hub.docker.com/panampunna-kerala$ docker build -t  vimaldevops/panampunna-kerala:V2   .
+docker login 
+john@Ubuntu22:~/Vimal/2023-ubuntu/Kubernetes-folder/hub.docker.com/panampunna-kerala$ docker push vimaldevops/panampunna-kerala:V2
+The push refers to repository [docker.io/vimaldevops/panampunna-kerala]
+ae9783237f96: Pushed 
+
+
+
