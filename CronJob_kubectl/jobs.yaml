@@ -1,0 +1,18 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: hello-world-job
+spec:
+  template:
+    metadata:
+      labels:
+        app: hello-world
+    spec:
+      containers:
+      - name: hello-world
+        image: vimaldevops/panampunna-kerala:king-June10
+      restartPolicy: Never
+  backoffLimit: 3
+
+
+##   vimaldevops/panampunna-kerala:kubectl_cronjobs_countdown-nginx-12

@@ -1,0 +1,23 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: hello-world-cronjob
+spec:
+  schedule: "*/5 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        metadata:
+          labels:
+            app: hello-world
+        spec:
+          containers:
+          - name: hello-world
+            image: vimaldevops/panampunna-kerala:king-June10  
+          restartPolicy: OnFailure
+
+
+#  vimaldevops/panampunna-kerala:kubectl_cronjobs_countdown-nginx-12
+#  vimaldevops/panampunna-kerala:king-June10
+
+

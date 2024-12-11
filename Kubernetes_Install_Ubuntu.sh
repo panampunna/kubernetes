@@ -33,10 +33,15 @@
 	#kubectl apply -f   /home/john/Vimal/2023-ubuntu/Kubernetes-folder/nginx-service.yaml
 	kubectl apply -f   https://raw.githubusercontent.com/panampunna/kubernetes/develop/nginx-service.yaml
 	"$SCRIPT_DIR/are_all_pods_running.sh"
+	echo "##====     minikube tunnel & for EXTERNAL-IP   ==##### "
+	minikube tunnel &   
 	echo "##====        kubectl get services   ===============##### "
 			kubectl get services
 	echo "##=====  kubectl port-forward service/nginx-service 8080:80   =======##### "
                         kubectl port-forward service/nginx-service 8080:80 &
+			 echo "##=====  IP of the Application  === ##### "
+			kubectl get service nginx-service -o jsonpath='{.status.loadBalancer.ingress[0].ip}'   
+			chromium-browser http://"kubectl get service nginx-service -o jsonpath='{.status.loadBalancer.ingress[0].ip}'":8080/ & 
 			chromium-browser http://localhost:8080/ & 
         echo "##=====    check       http://localhost:8080/    =======##### "
 
